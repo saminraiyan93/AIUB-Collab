@@ -24,7 +24,7 @@ export class CreateUserProfileTable1794260919000
                     {
                         name: "profile_image",
                         type: "varchar",
-                        isNullable: false,
+                        isNullable: true,
                     },
                     {
                         name: "academic_identity",
