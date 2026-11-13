@@ -6,6 +6,7 @@ import { AppService } from "@/src/app.service";
 import global_config from "@/config/global_config";
 import { BullModule } from "@nestjs/bull";
 import { UserModule } from "./modules/user/user.module";
+import { ComplaintReportModule } from "./modules/complaint_report/complaint_report.module";
 import { UserProfileModule } from "./modules/user_profile/user_profile.module";
 import { DepartmentModule } from "./modules/department/department.module";
 
@@ -24,7 +25,7 @@ import { DepartmentModule } from "./modules/department/department.module";
       isGlobal: true,
       load: [global_config],
     }),
-    UserModule,
+    UserModule, ComplaintReportModule,
     UserProfileModule,
     DepartmentModule,
   ],
