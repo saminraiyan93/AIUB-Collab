@@ -6,6 +6,12 @@ import { AppService } from "@/src/app.service";
 import global_config from "@/config/global_config";
 import { BullModule } from "@nestjs/bull";
 import { UserModule } from "./modules/user/user.module";
+import { ComplaintReportModule } from "./modules/complaint_report/complaint_report.module";
+import { UserProfileModule } from "./modules/user_profile/user_profile.module";
+import { DepartmentModule } from "./modules/department/department.module";
+import { CollabPostModule } from "./modules/collab_post/collab_post.module";
+import { UserProfileSkillModule } from "./modules/user_profile_skill/user_profile_skill.module";
+import { SkillModule } from "./modules/skill/skill.module";
 
 @Module({
   imports: [
@@ -22,7 +28,12 @@ import { UserModule } from "./modules/user/user.module";
       isGlobal: true,
       load: [global_config],
     }),
-    UserModule,
+    UserModule, ComplaintReportModule,
+    UserProfileModule,
+    DepartmentModule,
+    CollabPostModule,
+    UserProfileSkillModule,
+    SkillModule,
   ],
   controllers: [AppController],
   providers: [AppService],
