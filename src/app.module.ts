@@ -9,6 +9,7 @@ import { UserModule } from "./modules/user/user.module";
 import { ComplaintReportModule } from "./modules/complaint_report/complaint_report.module";
 import { UserProfileModule } from "./modules/user_profile/user_profile.module";
 import { DepartmentModule } from "./modules/department/department.module";
+import { CollabPostModule } from "./modules/collab_post/collab_post.module";
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { DepartmentModule } from "./modules/department/department.module";
     UserModule, ComplaintReportModule,
     UserProfileModule,
     DepartmentModule,
+    CollabPostModule,
   ],
   controllers: [AppController],
   providers: [AppService],

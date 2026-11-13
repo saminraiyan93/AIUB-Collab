@@ -15,21 +15,14 @@ export class ComplaintReportService {
 
     async getComplaintReports() {
         return await this.complaintReportRepository.find({
-            relations: [
-                "reporter",
-                "reported_user",
-                // Temporarily using collab_post_id as a string until the collab post module is completed
-                //"collab_post",
-                "reviewed_by_admin",
-        ],
+            relations: ["reporter","reported_user","collab_post","reviewed_by_admin"]
         });
     }
 
     async getComplaintReportById(id: string) {
         const complaintReport = await this.complaintReportRepository.findOne({
-            where: {
-                report_id: id,
-            },
+            where: {report_id: id},
+            relations: ["reporter", "reported_user", "collab_post", "reviewed_by_admin"]
         });
 
         if (!complaintReport) {
@@ -40,16 +33,17 @@ export class ComplaintReportService {
     }
 
     async createComplaintReport(dto: CreateComplaintReportDto) {
-        const complaintReport = this.complaintReportRepository.create({...dto, 
+        const complaintReport = this.complaintReportRepository.create({
+                ...dto, 
                 reporter: { user_id: dto.reporter_id },
                 reported_user: dto.reported_user_id ? { user_id: dto.reported_user_id } : null,
-                // Temporarily using collab_post_id as a string until the collab post module is completed
-                // collab_post: dto.collab_post_id ? { collab_post_id: dto.collab_post_id } : null,
-                collab_post_id: dto.collab_post_id ?? null,
+                collab_post: dto.collab_post_id ? { collab_post_id: dto.collab_post_id } : null,
                 reason: dto.reason,
                 description: dto.description,
                 report_status: ReportStatus.SUBMITTED});
+
         const savedComplaintReport = await this.complaintReportRepository.save(complaintReport);
+        
         return {
             message: "Complaint report submitted successfully.",
             data: savedComplaintReport,

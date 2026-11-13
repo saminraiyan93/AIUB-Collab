@@ -1,14 +1,8 @@
-import {
-    Column,
-    Entity,
-    JoinColumn,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-} from "typeorm";
-
+import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn,} from "typeorm";
 import { User } from "../../user/entities/user.entity";
 import { ReportReason } from "../../../common/enums/report-reason.enum";
 import { ReportStatus } from "../../../common/enums/report-status.enum";
+import { CollabPost } from "../../collab_post/entities/collab_post.entity";
 
 @Entity({ name: "complaint_reports" })
 export class ComplaintReport {
@@ -24,13 +18,9 @@ export class ComplaintReport {
     reported_user?: User | null;
 
     // Will be used in future after completion of collab post module
-    // @ManyToOne(() => CollabPost, { nullable: true })
-    // @JoinColumn({ name: "collab_post_id" })
-    // collab_post?: CollabPost | null;
-
-    // Temporarily using collab_post_id as a string until the collab post module is completed
-    @Column({ type: "uuid", nullable: true })
-    collab_post_id?: string | null;
+    @ManyToOne(() => CollabPost, { nullable: true })
+    @JoinColumn({ name: "collab_post_id" })
+    collab_post?: CollabPost | null;
 
     @Column({ type: "varchar" })
     reason!: ReportReason;
