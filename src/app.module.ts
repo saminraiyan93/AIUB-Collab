@@ -10,6 +10,8 @@ import { ComplaintReportModule } from "./modules/complaint_report/complaint_repo
 import { UserProfileModule } from "./modules/user_profile/user_profile.module";
 import { DepartmentModule } from "./modules/department/department.module";
 import { CollabPostModule } from "./modules/collab_post/collab_post.module";
+import { UserProfileSkillModule } from "./modules/user_profile_skill/user_profile_skill.module";
+import { SkillModule } from "./modules/skill/skill.module";
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { CollabPostModule } from "./modules/collab_post/collab_post.module";
     UserProfileModule,
     DepartmentModule,
     CollabPostModule,
+    UserProfileSkillModule,
+    SkillModule,
   ],
   controllers: [AppController],
   providers: [AppService],
