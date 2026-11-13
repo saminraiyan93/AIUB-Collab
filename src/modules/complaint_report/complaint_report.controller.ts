@@ -24,10 +24,7 @@ export class ComplaintReportController {
     }
 
     @Patch(":id")
-    async updateComplaintReport(
-        @Param("id") id: string,
-        @Body() dto: UpdateComplaintReportDto,
-    ) {
+    async updateComplaintReport(@Param("id") id: string, @Body() dto: UpdateComplaintReportDto) {
         return await this.complaintReportService.updateComplaintReport(id, dto);
     }
 

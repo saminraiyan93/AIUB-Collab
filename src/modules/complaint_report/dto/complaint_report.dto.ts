@@ -1,4 +1,4 @@
-import {IsDateString, IsEnum, IsNotEmpty, IsOptional, IsUUID} from "class-validator";
+import { IsEnum, IsNotEmpty, IsOptional, IsUUID} from "class-validator";
 import { ReportReason } from "../../../common/enums/report-reason.enum";
 import { ReportStatus } from "../../../common/enums/report-status.enum";
 
