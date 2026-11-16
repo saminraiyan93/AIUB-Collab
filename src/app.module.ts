@@ -12,7 +12,8 @@ import { DepartmentModule } from "./modules/department/department.module";
 import { CollabPostModule } from "./modules/collab_post/collab_post.module";
 import { UserProfileSkillModule } from "./modules/user_profile_skill/user_profile_skill.module";
 import { SkillModule } from "./modules/skill/skill.module";
-
+import { CollabPostPreferredAcademicIdentityModule } from "./modules/collab_post_preferred_academic_identity/collab_post_preferred_academic_identity.module";
+import { UserLinkedProfileModule } from "./modules/user_linked_profile/user_linked_profile.module";
 @Module({
   imports: [
     PostgresDatabaseProviderModule,
@@ -34,6 +35,8 @@ import { SkillModule } from "./modules/skill/skill.module";
     CollabPostModule,
     UserProfileSkillModule,
     SkillModule,
+    CollabPostPreferredAcademicIdentityModule,
+    UserLinkedProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
