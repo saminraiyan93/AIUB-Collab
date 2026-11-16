@@ -21,6 +21,9 @@ export class UserProfileService {
                     user_profile_skills: {
                         skill: true,
                     },
+                    user_profile_interests: {
+                        interest: true,
+                    },
                 },
             });
             return userProfiles;
@@ -40,6 +43,9 @@ export class UserProfileService {
                         user: true,
                         user_profile_skills: {
                             skill: true,
+                        },
+                        user_profile_interests: {
+                            interest: true,
                         },
                     },
                 }

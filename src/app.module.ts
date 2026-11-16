@@ -14,6 +14,12 @@ import { UserProfileSkillModule } from "./modules/user_profile_skill/user_profil
 import { SkillModule } from "./modules/skill/skill.module";
 import { CollabPostPreferredAcademicIdentityModule } from "./modules/collab_post_preferred_academic_identity/collab_post_preferred_academic_identity.module";
 import { UserLinkedProfileModule } from "./modules/user_linked_profile/user_linked_profile.module";
+import { CollabApplicationModule } from "./modules/collab_application/collab_application.module";
+import { CollabPostPreferredDepartmentModule } from "./modules/collab_post_preferred_department/collab_post_preferred_department.module";
+import { InterestModule } from "./modules/interest/interest.module";
+import { UserProfileInterestModule } from "./modules/user_profile_interest/user_profile_interest.module";
+import { CollabPostRequiredSkillModule } from "./modules/collab_post_required_skill/collab_post_required_skill.module";
+
 @Module({
   imports: [
     PostgresDatabaseProviderModule,
@@ -37,6 +43,12 @@ import { UserLinkedProfileModule } from "./modules/user_linked_profile/user_link
     SkillModule,
     CollabPostPreferredAcademicIdentityModule,
     UserLinkedProfileModule,
+    CollabApplicationModule,
+    CollabPostPreferredDepartmentModule,
+    CollabApplicationModule,
+    InterestModule,
+    UserProfileInterestModule,
+    CollabPostRequiredSkillModule,
   ],
   controllers: [AppController],
   providers: [AppService],
