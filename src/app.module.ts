@@ -14,6 +14,7 @@ import { UserProfileSkillModule } from "./modules/user_profile_skill/user_profil
 import { SkillModule } from "./modules/skill/skill.module";
 import { InterestModule } from "./modules/interest/interest.module";
 import { UserProfileInterestModule } from "./modules/user_profile_interest/user_profile_interest.module";
+import { CollabPostRequiredSkillModule } from "./modules/collab_post_required_skill/collab_post_required_skill.module";
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { UserProfileInterestModule } from "./modules/user_profile_interest/user_
     SkillModule,
     InterestModule,
     UserProfileInterestModule,
+    CollabPostRequiredSkillModule,
   ],
   controllers: [AppController],
   providers: [AppService],
