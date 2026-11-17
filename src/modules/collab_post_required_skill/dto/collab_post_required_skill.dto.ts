@@ -1,4 +1,8 @@
-import { IsNotEmpty, IsOptional, IsUUID } from "class-validator";
+import {
+    IsNotEmpty,
+    IsUUID,
+    ValidateIf,
+} from "class-validator";
 
 export class CreateCollabPostRequiredSkillDto {
     @IsNotEmpty({ message: "collab_post_id is required" })
@@ -15,13 +19,13 @@ export class CreateCollabPostRequiredSkillDto {
 }
 
 export class UpdateCollabPostRequiredSkillDto {
-    @IsOptional()
+    @ValidateIf((_object, value) => value !== undefined)
     @IsUUID(undefined, {
         message: "collab_post_id must be a valid UUID",
     })
     collab_post_id?: string;
 
-    @IsOptional()
+    @ValidateIf((_object, value) => value !== undefined)
     @IsUUID(undefined, {
         message: "skill_id must be a valid UUID",
     })
