@@ -1,23 +1,15 @@
-import {
-    IsDateString,
-    IsEnum,
-    IsInt,
-    IsNotEmpty,
-    IsOptional,
-    IsUUID,
-    Min,
-} from "class-validator";
+import {IsDateString,IsEnum,IsInt,IsNotEmpty,IsOptional,IsUUID,Min} from "class-validator";
 import { CollabCategory } from "../../../common/enums/collab-category.enum";
 import { CollabType } from "../../../common/enums/collab-type.enum";
 import { LocationType } from "../../../common/enums/location-type.enum";
 import { PostStatus } from "../../../common/enums/post-status.enum";
 
 export class CreateCollabPostDto {
-    @IsNotEmpty({ message: "user_profile_id is required" })
-    @IsUUID(undefined, { message: "user_profile_id must be a valid UUID" })
+    @IsNotEmpty()
+    @IsUUID()
     user_profile_id!: string;
 
-    @IsNotEmpty({ message: "post_title is required" })
+    @IsNotEmpty()
     post_title!: string;
 
     @IsOptional()

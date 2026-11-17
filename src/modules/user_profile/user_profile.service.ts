@@ -18,6 +18,12 @@ export class UserProfileService {
                 relations: {
                     department: true,
                     user: true,
+                    user_profile_skills: {
+                        skill: true,
+                    },
+                    user_profile_interests: {
+                        interest: true,
+                    },
                 },
             });
             return userProfiles;
@@ -35,6 +41,12 @@ export class UserProfileService {
                     relations: {
                         department: true,
                         user: true,
+                        user_profile_skills: {
+                            skill: true,
+                        },
+                        user_profile_interests: {
+                            interest: true,
+                        },
                     },
                 }
             );

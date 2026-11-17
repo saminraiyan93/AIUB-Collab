@@ -398,6 +398,7 @@ package-lock.json
 =======
 # Local
 .env
+.env.local
 dist
 .webpack
 .serverless/**/*.zip
