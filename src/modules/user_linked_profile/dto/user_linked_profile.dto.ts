@@ -1,10 +1,4 @@
-import {
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsUUID,
-  IsUrl,
-} from "class-validator";
+import {IsNotEmpty, IsOptional, IsString, IsUUID, IsUrl} from "class-validator";
 
 export class CreateUserLinkedProfileDto {
   @IsNotEmpty({ message: "user_profile_id is required" })
