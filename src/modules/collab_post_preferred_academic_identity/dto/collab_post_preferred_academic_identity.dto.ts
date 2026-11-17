@@ -1,9 +1,4 @@
-import {
-    IsEnum,
-    IsNotEmpty,
-    IsOptional,
-    IsUUID,
-} from "class-validator";
+import {IsEnum, IsNotEmpty, IsOptional, IsUUID} from "class-validator";
 import { AcademicIdentity } from "../../../common/enums/academic-identity.enum";
 
 export class CreateCollabPostPreferredAcademicIdentityDto {
