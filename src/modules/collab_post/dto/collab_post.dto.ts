@@ -15,29 +15,42 @@ export class CreateCollabPostDto {
     @IsOptional()
     post_description?: string | null;
 
-    @IsNotEmpty()
-    @IsEnum(CollabCategory)
+    @IsNotEmpty({ message: "collab_category is required" })
+    @IsEnum(CollabCategory, {
+        message: "collab_category must be Research or Project",
+    })
     collab_category!: CollabCategory;
 
-    @IsNotEmpty()
-    @IsEnum(CollabType)
+    @IsNotEmpty({ message: "collab_type is required" })
+    @IsEnum(CollabType, {
+        message: "collab_type must be Co-author, Collaborator, or Other",
+    })
     collab_type!: CollabType;
 
-    @IsNotEmpty()
-    @IsInt()
-    @Min(1)
+    @IsNotEmpty({ message: "collaborators_needed is required" })
+    @IsInt({ message: "collaborators_needed must be an integer" })
+    @Min(1, {
+        message: "collaborators_needed must be at least 1",
+    })
     collaborators_needed!: number;
 
-    @IsNotEmpty()
-    @IsDateString()
-    application_deadline!: Date;
+    @IsNotEmpty({ message: "application_deadline is required" })
+    @IsDateString(
+        {},
+        { message: "application_deadline must be a valid date" },
+    )
+    application_deadline!: string;
 
-    @IsNotEmpty()
-    @IsEnum(LocationType)
+    @IsNotEmpty({ message: "location_type is required" })
+    @IsEnum(LocationType, {
+        message: "location_type must be Online, Onsite, or Hybrid",
+    })
     location_type!: LocationType;
 
-    @IsNotEmpty()
-    @IsUUID()
+    @IsNotEmpty({ message: "post_contact_id is required" })
+    @IsUUID(undefined, {
+        message: "post_contact_id must be a valid UUID",
+    })
     post_contact_id!: string;
 }
 
@@ -49,31 +62,46 @@ export class UpdateCollabPostDto {
     post_description?: string | null;
 
     @IsOptional()
-    @IsEnum(CollabCategory)
+    @IsEnum(CollabCategory, {
+        message: "collab_category must be Research or Project",
+    })
     collab_category?: CollabCategory;
 
     @IsOptional()
-    @IsEnum(CollabType)
+    @IsEnum(CollabType, {
+        message: "collab_type must be Co-author, Collaborator, or Other",
+    })
     collab_type?: CollabType;
 
     @IsOptional()
-    @IsInt()
-    @Min(1)
+    @IsInt({ message: "collaborators_needed must be an integer" })
+    @Min(1, {
+        message: "collaborators_needed must be at least 1",
+    })
     collaborators_needed?: number;
 
     @IsOptional()
-    @IsDateString()
-    application_deadline?: Date;
+    @IsDateString(
+        {},
+        { message: "application_deadline must be a valid date" },
+    )
+    application_deadline?: string;
 
     @IsOptional()
-    @IsEnum(LocationType)
+    @IsEnum(LocationType, {
+        message: "location_type must be Online, Onsite, or Hybrid",
+    })
     location_type?: LocationType;
 
     @IsOptional()
-    @IsEnum(PostStatus)
+    @IsEnum(PostStatus, {
+        message: "post_status must be Pending, Open, or Closed",
+    })
     post_status?: PostStatus;
 
     @IsOptional()
-    @IsUUID()
+    @IsUUID(undefined, {
+        message: "post_contact_id must be a valid UUID",
+    })
     post_contact_id?: string;
 }
