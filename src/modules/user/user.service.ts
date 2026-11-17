@@ -38,6 +38,23 @@ export class UserService {
         }
     }
 
+    async getCurrentUser(id: string) {
+        try {
+            const user = await this.userRepository.findOne({
+                where: { user_id: id },
+            });
+
+            if (!user) {
+                throw new NotFoundException("User not found!");
+            }
+
+            const { user_password, ...userInformation } = user;
+            return userInformation;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async createUser(dto: CreateUserDto) {
         try {
             const responce = await this.userRepository.create(dto);

@@ -1,11 +1,28 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from "@nestjs/common";
-import{UserService} from "./user.service";
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Patch,
+    Post,
+    Req,
+    UseGuards,
+} from "@nestjs/common";
+import { JwtGuard } from "../../common/guard/jwt.guard";
+import { UserService } from "./user.service";
 import { CreateUserDto, UpdateUserDto } from "./dto/user.dto";
 
 @Controller("users")
 export class UserController {
 
     constructor(private readonly userService: UserService) {}
+
+    @Get("me")
+    @UseGuards(JwtGuard)
+    async getCurrentUser(@Req() req: { user: { id: string } }) {
+        return await this.userService.getCurrentUser(req.user.id);
+    }
 
     @Get()
     async getUsers() {
