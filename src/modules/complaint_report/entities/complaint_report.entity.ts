@@ -17,7 +17,6 @@ export class ComplaintReport {
     @JoinColumn({ name: "reported_user_id" })
     reported_user?: User | null;
 
-    // Will be used in future after completion of collab post module
     @ManyToOne(() => CollabPost, { nullable: true })
     @JoinColumn({ name: "collab_post_id" })
     collab_post?: CollabPost | null;

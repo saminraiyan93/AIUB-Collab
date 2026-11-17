@@ -20,6 +20,8 @@ async function bootstrap() {
     prefix: "/uploads/",
   });
 
+  app.useGlobalPipes(new ValidationPipe());
+
   const expressApp = app.getHttpAdapter().getInstance();
   expressApp.set("trust proxy", true);
 

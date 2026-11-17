@@ -12,6 +12,10 @@ import { DepartmentModule } from "./modules/department/department.module";
 import { CollabPostModule } from "./modules/collab_post/collab_post.module";
 import { UserProfileSkillModule } from "./modules/user_profile_skill/user_profile_skill.module";
 import { SkillModule } from "./modules/skill/skill.module";
+import { CollabPostPreferredAcademicIdentityModule } from "./modules/collab_post_preferred_academic_identity/collab_post_preferred_academic_identity.module";
+import { UserLinkedProfileModule } from "./modules/user_linked_profile/user_linked_profile.module";
+import { CollabApplicationModule } from "./modules/collab_application/collab_application.module";
+import { CollabPostPreferredDepartmentModule } from "./modules/collab_post_preferred_department/collab_post_preferred_department.module";
 import { InterestModule } from "./modules/interest/interest.module";
 import { UserProfileInterestModule } from "./modules/user_profile_interest/user_profile_interest.module";
 import { AuthModule } from "./modules/auth/auth.module";
@@ -19,7 +23,6 @@ import { AuthModule } from "./modules/auth/auth.module";
 @Module({
   imports: [
     PostgresDatabaseProviderModule,
-
     ConfigModule.forRoot({
       isGlobal: true,
       load: [],
@@ -37,6 +40,11 @@ import { AuthModule } from "./modules/auth/auth.module";
     CollabPostModule,
     UserProfileSkillModule,
     SkillModule,
+    CollabPostPreferredAcademicIdentityModule,
+    UserLinkedProfileModule,
+    CollabApplicationModule,
+    CollabPostPreferredDepartmentModule,
+    CollabApplicationModule,
     InterestModule,
     UserProfileInterestModule,
     AuthModule,
