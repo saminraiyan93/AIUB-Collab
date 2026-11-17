@@ -4,9 +4,10 @@ import { ComplaintReportController } from "./complaint_report.controller";
 import { ComplaintReportService } from "./complaint_report.service";
 import { ComplaintReport } from "./entities/complaint_report.entity";
 import { User } from "../user/entities/user.entity";
+import { CollabPost } from "../collab_post/entities/collab_post.entity";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([ComplaintReport, User, /*CollabPost*/])], // Temporarily using collab_post_id as a string until the collab post module is completed
+    imports: [TypeOrmModule.forFeature([ComplaintReport, User, CollabPost])],
     controllers: [ComplaintReportController],
     providers: [ComplaintReportService],
     exports: [ComplaintReportService],

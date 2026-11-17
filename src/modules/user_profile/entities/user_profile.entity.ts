@@ -1,7 +1,9 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { AcademicIdentity } from "../../../common/enums/academic-identity.enum";
 import { Department } from "../../department/entities/department.entity";
 import { User } from "../../user/entities/user.entity";
+import { UserProfileInterest } from "../../user_profile_interest/entities/user_profile_interest.entity";
+import { UserProfileSkill } from "../../user_profile_skill/entities/user_profile_skill.entity";
 
 @Entity({ name: "user_profiles" })
 export class UserProfile {
@@ -27,6 +29,12 @@ export class UserProfile {
     @ManyToOne(() => Department, { nullable: false })
     @JoinColumn({ name: "department_id", referencedColumnName: "department_id" })
     department!: Department;
+
+    @OneToMany(() => UserProfileSkill, (userProfileSkill) => userProfileSkill.user_profile)
+    user_profile_skills!: UserProfileSkill[];
+
+    @OneToMany(() => UserProfileInterest, (userProfileInterest) => userProfileInterest.user_profile)
+    user_profile_interests!: UserProfileInterest[];
 
     @Column({ type: "varchar", nullable: true })
     bio?: string | null;
