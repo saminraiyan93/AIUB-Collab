@@ -1,10 +1,4 @@
-import {
-    IsEnum,
-    IsNotEmpty,
-    IsOptional,
-    IsString,
-    IsUUID,
-} from "class-validator";
+import {IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID} from "class-validator";
 import { ContactVia } from "../../../common/enums/contact-via.enum";
 
 export class CreateUserProfileContactDto {
