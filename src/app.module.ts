@@ -19,6 +19,7 @@ import { CollabPostPreferredDepartmentModule } from "./modules/collab_post_prefe
 import { InterestModule } from "./modules/interest/interest.module";
 import { UserProfileInterestModule } from "./modules/user_profile_interest/user_profile_interest.module";
 import { AuthModule } from "./modules/auth/auth.module";
+import { RolesGuard } from "./common/guard/roles.guard";
 
 @Module({
   imports: [
@@ -34,7 +35,8 @@ import { AuthModule } from "./modules/auth/auth.module";
       isGlobal: true,
       load: [global_config],
     }),
-    UserModule, ComplaintReportModule,
+    UserModule, 
+    ComplaintReportModule,
     UserProfileModule,
     DepartmentModule,
     CollabPostModule,
@@ -42,7 +44,6 @@ import { AuthModule } from "./modules/auth/auth.module";
     SkillModule,
     CollabPostPreferredAcademicIdentityModule,
     UserLinkedProfileModule,
-    CollabApplicationModule,
     CollabPostPreferredDepartmentModule,
     CollabApplicationModule,
     InterestModule,
@@ -50,6 +51,6 @@ import { AuthModule } from "./modules/auth/auth.module";
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, RolesGuard],
 })
 export class AppModule {}
