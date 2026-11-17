@@ -4,7 +4,7 @@ import {
   ArgumentMetadata,
   BadRequestException,
 } from "@nestjs/common";
-import { validate, ValidatorOptions } from "class-validator";
+import { validate, ValidationError, ValidatorOptions } from "class-validator";
 import { plainToInstance } from "class-transformer";
 
 @Injectable()
@@ -22,9 +22,14 @@ export class ValidationPipe implements PipeTransform<any> {
     const object = plainToInstance(metatype, value);
     const errors = await validate(object, this.options);
     if (errors.length > 0) {
-      throw new BadRequestException("Bad Request Payload");
+      throw new BadRequestException({message: "Payload Validation Failed!", errors: this.formatErrors(errors)});
     }
     return object;
+  }
+
+  private formatErrors(errors: ValidationError[]) {
+    return errors.flatMap((error) =>
+      Object.values(error.constraints ?? {}).map((message) => ({field: error.property, message})));
   }
 
   private toValidate(metatype: Function): boolean {
