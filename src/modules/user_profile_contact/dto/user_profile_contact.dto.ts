@@ -1,24 +1,41 @@
-import {IsEnum, IsNotEmpty, IsUUID} from "class-validator";
+import {
+    IsEnum,
+    IsNotEmpty,
+    IsOptional,
+    IsString,
+    IsUUID,
+} from "class-validator";
 import { ContactVia } from "../../../common/enums/contact-via.enum";
 
 export class CreateUserProfileContactDto {
-    @IsNotEmpty()
-    @IsUUID()
+    @IsNotEmpty({ message: "user_profile_id is required" })
+    @IsUUID(undefined, {
+        message: "user_profile_id must be a valid UUID",
+    })
     user_profile_id!: string;
 
-    @IsNotEmpty()
-    @IsEnum(ContactVia)
+    @IsNotEmpty({ message: "contact_via is required" })
+    @IsEnum(ContactVia, {
+        message:
+            "contact_via must be Email, Phone, LinkedIn, WhatsApp, Telegram, or Other",
+    })
     contact_via!: ContactVia;
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: "contact_value is required" })
+    @IsString({ message: "contact_value must be a string" })
     contact_value!: string;
 }
 
 export class UpdateUserProfileContactDto {
-    @IsNotEmpty()
-    @IsEnum(ContactVia)
-    contact_via!: ContactVia;
+    @IsOptional()
+    @IsEnum(ContactVia, {
+        message:
+            "contact_via must be Email, Phone, LinkedIn, WhatsApp, Telegram, or Other",
+    })
+    contact_via?: ContactVia;
 
-    @IsNotEmpty()
-    contact_value!: string;
+    @IsOptional()
+    @IsString({ message: "contact_value must be a string" })
+    @IsNotEmpty({ message: "contact_value must not be empty" })
+    contact_value?: string;
 }
