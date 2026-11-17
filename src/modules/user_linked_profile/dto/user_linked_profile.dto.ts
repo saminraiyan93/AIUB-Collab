@@ -1,30 +1,37 @@
 import {
   IsNotEmpty,
+  IsOptional,
   IsString,
   IsUUID,
   IsUrl,
 } from "class-validator";
 
 export class CreateUserLinkedProfileDto {
-  @IsUUID()
+  @IsNotEmpty({ message: "user_profile_id is required" })
+  @IsUUID(undefined, {
+    message: "user_profile_id must be a valid UUID",
+  })
   user_profile_id!: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: "platform_name is required" })
+  @IsString({ message: "platform_name must be a string" })
   platform_name!: string;
 
-  @IsUrl()
+  @IsNotEmpty({ message: "profile_url is required" })
+  @IsUrl(undefined, {
+    message: "profile_url must be a valid URL",
+  })
   profile_url!: string;
 }
 
 export class UpdateUserLinkedProfileDto {
-  @IsUUID()
-  user_profile_id!: string;
+  @IsOptional()
+  @IsString({ message: "platform_name must be a string" })
+  platform_name?: string;
 
-  @IsString()
-  @IsNotEmpty()
-  platform_name!: string;
-
-  @IsUrl()
-  profile_url!: string;
+  @IsOptional()
+  @IsUrl(undefined, {
+    message: "profile_url must be a valid URL",
+  })
+  profile_url?: string;
 }
