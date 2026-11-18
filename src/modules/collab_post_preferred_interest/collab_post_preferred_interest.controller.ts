@@ -7,11 +7,11 @@ import {
     Patch,
     Post,
 } from "@nestjs/common";
-import { CollabPostPreferredInterestService } from "./collab_post_preferred_interest.service";
+import { CollabPostPreferredInterestService } from "@/modules/collab_post_preferred_interest/collab_post_preferred_interest.service";
 import {
     CreateCollabPostPreferredInterestDto,
     UpdateCollabPostPreferredInterestDto,
-} from "./dto/collab_post_preferred_interest.dto";
+} from "@/modules/collab_post_preferred_interest/dto/collab_post_preferred_interest.dto";
 
 @Controller("collab-post-preferred-interests")
 export class CollabPostPreferredInterestController {
@@ -21,37 +21,37 @@ export class CollabPostPreferredInterestController {
     ) {}
 
     @Get()
-    async getCollabPostPreferredInterests() {
-        return await this.collabPostPreferredInterestService
+    getCollabPostPreferredInterests() {
+        return this.collabPostPreferredInterestService
             .getCollabPostPreferredInterests();
     }
 
     @Get(":id")
-    async getCollabPostPreferredInterestById(@Param("id") id: string) {
-        return await this.collabPostPreferredInterestService
+    getCollabPostPreferredInterestById(@Param("id") id: string) {
+        return this.collabPostPreferredInterestService
             .getCollabPostPreferredInterestById(id);
     }
 
     @Post()
-    async createCollabPostPreferredInterest(
+    createCollabPostPreferredInterest(
         @Body() dto: CreateCollabPostPreferredInterestDto,
     ) {
-        return await this.collabPostPreferredInterestService
+        return this.collabPostPreferredInterestService
             .createCollabPostPreferredInterest(dto);
     }
 
     @Patch(":id")
-    async updateCollabPostPreferredInterest(
+    updateCollabPostPreferredInterest(
         @Param("id") id: string,
         @Body() dto: UpdateCollabPostPreferredInterestDto,
     ) {
-        return await this.collabPostPreferredInterestService
+        return this.collabPostPreferredInterestService
             .updateCollabPostPreferredInterest(id, dto);
     }
 
     @Delete(":id")
-    async deleteCollabPostPreferredInterest(@Param("id") id: string) {
-        return await this.collabPostPreferredInterestService
+    deleteCollabPostPreferredInterest(@Param("id") id: string) {
+        return this.collabPostPreferredInterestService
             .deleteCollabPostPreferredInterest(id);
     }
 }
