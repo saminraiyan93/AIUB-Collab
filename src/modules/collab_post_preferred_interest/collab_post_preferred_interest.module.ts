@@ -1,10 +1,10 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { CollabPostPreferredInterestController } from "./collab_post_preferred_interest.controller";
-import { CollabPostPreferredInterestService } from "./collab_post_preferred_interest.service";
-import { CollabPostPreferredInterest } from "./entities/collab_post_preferred_interest.entity";
-import { CollabPost } from "../collab_post/entities/collab_post.entity";
-import { Interest } from "../interest/entities/interest.entity";
+import { CollabPostPreferredInterestController } from "@/modules/collab_post_preferred_interest/collab_post_preferred_interest.controller";
+import { CollabPostPreferredInterestService } from "@/modules/collab_post_preferred_interest/collab_post_preferred_interest.service";
+import { CollabPostPreferredInterest } from "@/modules/collab_post_preferred_interest/entities/collab_post_preferred_interest.entity";
+import { CollabPost } from "@/modules/collab_post/entities/collab_post.entity";
+import { Interest } from "@/modules/interest/entities/interest.entity";
 
 @Module({
     imports: [
