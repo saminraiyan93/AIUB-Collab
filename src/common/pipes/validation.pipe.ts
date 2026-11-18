@@ -19,7 +19,7 @@ export class ValidationPipe implements PipeTransform<any> {
     if (!metatype || !this.toValidate(metatype)) {
       return value;
     }
-    const object = plainToInstance(metatype, value);
+    const object = value instanceof metatype ? value : plainToInstance(metatype, value);
     const errors = await validate(object, this.options);
     if (errors.length > 0) {
       throw new BadRequestException({message: "Payload Validation Failed!", errors: this.formatErrors(errors)});
