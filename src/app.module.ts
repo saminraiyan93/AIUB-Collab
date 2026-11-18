@@ -19,12 +19,12 @@ import { CollabPostPreferredDepartmentModule } from "./modules/collab_post_prefe
 import { InterestModule } from "./modules/interest/interest.module";
 import { UserProfileInterestModule } from "./modules/user_profile_interest/user_profile_interest.module";
 import { CollabPostRequiredSkillModule } from "./modules/collab_post_required_skill/collab_post_required_skill.module";
+import { UserProfileContactModule } from "./modules/user_profile_contact/user_profile_contact.module";
 import { CollabPostPreferredInterestModule } from "./modules/collab_post_preferred_interest/collab_post_preferred_interest.module";
 
 @Module({
   imports: [
     PostgresDatabaseProviderModule,
-
     ConfigModule.forRoot({
       isGlobal: true,
       load: [],
@@ -50,6 +50,7 @@ import { CollabPostPreferredInterestModule } from "./modules/collab_post_preferr
     InterestModule,
     UserProfileInterestModule,
     CollabPostRequiredSkillModule,
+    UserProfileContactModule,
     CollabPostPreferredInterestModule,
   ],
   controllers: [AppController],

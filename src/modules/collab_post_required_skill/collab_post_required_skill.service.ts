@@ -13,76 +13,120 @@ import {
 export class CollabPostRequiredSkillService {
     constructor(
         @InjectRepository(CollabPostRequiredSkill)
-        private readonly collabPostRequiredSkillRepository: Repository<CollabPostRequiredSkill>,
+        private readonly requiredSkillRepository: Repository<CollabPostRequiredSkill>,
+        @InjectRepository(CollabPost)
+        private readonly collabPostRepository: Repository<CollabPost>,
+        @InjectRepository(Skill)
+        private readonly skillRepository: Repository<Skill>,
     ) {}
 
     async getCollabPostRequiredSkills() {
-        return await this.collabPostRequiredSkillRepository.find({
-            relations: ["collab_post", "skill"],
+        return this.requiredSkillRepository.find({
+            relations: {
+                collab_post: true,
+                skill: true,
+            },
         });
     }
 
     async getCollabPostRequiredSkillById(id: string) {
-        const collabPostRequiredSkill =
-            await this.collabPostRequiredSkillRepository.findOne({
-                where: { post_required_skill_id: id },
-                relations: ["collab_post", "skill"],
-            });
+        const requiredSkill = await this.requiredSkillRepository.findOne({
+            where: { post_required_skill_id: id },
+            relations: {
+                collab_post: true,
+                skill: true,
+            },
+        });
 
-        if (!collabPostRequiredSkill) {
-            throw new NotFoundException("Required skill not found");
+        if (!requiredSkill) {
+            throw new NotFoundException("Required skill not found.");
         }
 
-        return collabPostRequiredSkill;
+        return requiredSkill;
     }
 
     async createCollabPostRequiredSkill(
         dto: CreateCollabPostRequiredSkillDto,
     ) {
-        const collabPostRequiredSkill =
-    this.collabPostRequiredSkillRepository.create({
-        collab_post_id: dto.collab_post_id,
-        collab_post: {
-            collab_post_id: dto.collab_post_id,
-        } as CollabPost,
-        skill_id: dto.skill_id,
-        skill: {
-            skill_id: dto.skill_id,
-        } as Skill,
-    });
+        const [collabPost, skill] = await Promise.all([
+            this.findCollabPostOrThrow(dto.collab_post_id),
+            this.findSkillOrThrow(dto.skill_id),
+        ]);
 
-return await this.collabPostRequiredSkillRepository.save(
-    collabPostRequiredSkill,
-);
+        const requiredSkill = this.requiredSkillRepository.create({
+            collab_post: collabPost,
+            skill,
+        });
+
+        const savedRequiredSkill =
+            await this.requiredSkillRepository.save(requiredSkill);
+
+        return {
+            message: "Required skill created successfully.",
+            data: await this.getCollabPostRequiredSkillById(
+                savedRequiredSkill.post_required_skill_id,
+            ),
+        };
     }
 
     async updateCollabPostRequiredSkill(
         id: string,
         dto: UpdateCollabPostRequiredSkillDto,
     ) {
-        const collabPostRequiredSkill =
-            await this.collabPostRequiredSkillRepository.findOne({
-                where: { post_required_skill_id: id },
-            });
+        const requiredSkill = await this.getCollabPostRequiredSkillById(id);
 
-        if (!collabPostRequiredSkill) {
-            throw new NotFoundException("Required skill not found");
+        if (dto.collab_post_id !== undefined) {
+            requiredSkill.collab_post = await this.findCollabPostOrThrow(
+                dto.collab_post_id,
+            );
         }
 
-        Object.assign(collabPostRequiredSkill, dto);
+        if (dto.skill_id !== undefined) {
+            requiredSkill.skill = await this.findSkillOrThrow(dto.skill_id);
+        }
 
-        await this.collabPostRequiredSkillRepository.save(
-            collabPostRequiredSkill,
-        );
+        await this.requiredSkillRepository.save(requiredSkill);
 
-        return await this.getCollabPostRequiredSkillById(id);
+        return {
+            message: "Required skill updated successfully.",
+            data: await this.getCollabPostRequiredSkillById(id),
+        };
     }
 
     async deleteCollabPostRequiredSkill(id: string) {
         await this.getCollabPostRequiredSkillById(id);
 
-        return await this.collabPostRequiredSkillRepository.delete({
+        const deleteResult = await this.requiredSkillRepository.delete({
             post_required_skill_id: id,
         });
+
+        return {
+            message: "Required skill deleted successfully.",
+            data: deleteResult,
+        };
+    }
+
+    private async findCollabPostOrThrow(id: string) {
+        const collabPost = await this.collabPostRepository.findOneBy({
+            collab_post_id: id,
+        });
+
+        if (!collabPost) {
+            throw new NotFoundException("Collaboration post not found.");
+        }
+
+        return collabPost;
+    }
+
+    private async findSkillOrThrow(id: string) {
+        const skill = await this.skillRepository.findOneBy({
+            skill_id: id,
+        });
+
+        if (!skill) {
+            throw new NotFoundException("Skill not found.");
+        }
+
+        return skill;
     }
 }

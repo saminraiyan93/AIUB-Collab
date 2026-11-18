@@ -1,11 +1,13 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { CollabPostPreferredInterest } from "@/modules/collab_post_preferred_interest/entities/collab_post_preferred_interest.entity";
+import { CollabPostPreferredInterest } from "./entities/collab_post_preferred_interest.entity";
+import { CollabPost } from "../collab_post/entities/collab_post.entity";
+import { Interest } from "../interest/entities/interest.entity";
 import {
     CreateCollabPostPreferredInterestDto,
     UpdateCollabPostPreferredInterestDto,
-} from "@/modules/collab_post_preferred_interest/dto/collab_post_preferred_interest.dto";
+} from "./dto/collab_post_preferred_interest.dto";
 
 @Injectable()
 export class CollabPostPreferredInterestService {
@@ -16,105 +18,109 @@ export class CollabPostPreferredInterestService {
     ) {}
 
     async getCollabPostPreferredInterests() {
-        return this.collabPostPreferredInterestRepository.find({
-            relations: {
-                collab_post: true,
-                interest: true,
-            },
-        });
+        try {
+            return await this.collabPostPreferredInterestRepository.find({
+                relations: ["collab_post", "interest"],
+            });
+        } catch (error) {
+            throw error;
+        }
     }
 
     async getCollabPostPreferredInterestById(id: string) {
-        const preferredInterest =
-            await this.collabPostPreferredInterestRepository.findOne({
-                where: { post_preferred_interest_id: id },
-                relations: {
-                    collab_post: true,
-                    interest: true,
-                },
-            });
+        try {
+            const preferredInterest =
+                await this.collabPostPreferredInterestRepository.findOne({
+                    where: { post_preferred_interest_id: id },
+                    relations: ["collab_post", "interest"],
+                });
 
-        if (!preferredInterest) {
-            throw new NotFoundException("Preferred interest not found");
+            if (!preferredInterest) {
+                throw new NotFoundException("Preferred interest not found");
+            }
+
+            return preferredInterest;
+        } catch (error) {
+            throw error;
         }
-
-        return preferredInterest;
     }
 
     async createCollabPostPreferredInterest(
         dto: CreateCollabPostPreferredInterestDto,
     ) {
-        const preferredInterest =
-            this.collabPostPreferredInterestRepository.create({
-                collab_post_id: dto.collab_post_id,
-                collab_post: {
+        try {
+            const preferredInterest =
+                this.collabPostPreferredInterestRepository.create({
                     collab_post_id: dto.collab_post_id,
-                },
-                interest_id: dto.interest_id,
-                interest: {
+                    collab_post: {
+                        collab_post_id: dto.collab_post_id,
+                    } as CollabPost,
                     interest_id: dto.interest_id,
-                },
-            });
+                    interest: {
+                        interest_id: dto.interest_id,
+                    } as Interest,
+                });
 
-        const savedPreferredInterest =
-            await this.collabPostPreferredInterestRepository.save(
-                preferredInterest,
+            const savedPreferredInterest =
+                await this.collabPostPreferredInterestRepository.save(
+                    preferredInterest,
+                );
+
+            return await this.getCollabPostPreferredInterestById(
+                savedPreferredInterest.post_preferred_interest_id,
             );
-
-        return this.getCollabPostPreferredInterestById(
-            savedPreferredInterest.post_preferred_interest_id,
-        );
+        } catch (error) {
+            throw error;
+        }
     }
 
     async updateCollabPostPreferredInterest(
         id: string,
         dto: UpdateCollabPostPreferredInterestDto,
     ) {
-        const preferredInterest =
-            await this.collabPostPreferredInterestRepository.findOne({
-                where: { post_preferred_interest_id: id },
-            });
+        try {
+            const preferredInterest =
+                await this.collabPostPreferredInterestRepository.findOne({
+                    where: { post_preferred_interest_id: id },
+                });
 
-        if (!preferredInterest) {
-            throw new NotFoundException("Preferred interest not found");
-        }
+            if (!preferredInterest) {
+                throw new NotFoundException("Preferred interest not found");
+            }
 
-        if (dto.collab_post_id !== undefined) {
-            this.collabPostPreferredInterestRepository.merge(
-                preferredInterest,
-                {
+            if (dto.collab_post_id !== undefined) {
+                preferredInterest.collab_post_id = dto.collab_post_id;
+                preferredInterest.collab_post = {
                     collab_post_id: dto.collab_post_id,
-                    collab_post: {
-                        collab_post_id: dto.collab_post_id,
-                    },
-                },
-            );
-        }
+                } as CollabPost;
+            }
 
-        if (dto.interest_id !== undefined) {
-            this.collabPostPreferredInterestRepository.merge(
-                preferredInterest,
-                {
+            if (dto.interest_id !== undefined) {
+                preferredInterest.interest_id = dto.interest_id;
+                preferredInterest.interest = {
                     interest_id: dto.interest_id,
-                    interest: {
-                        interest_id: dto.interest_id,
-                    },
-                },
+                } as Interest;
+            }
+
+            await this.collabPostPreferredInterestRepository.save(
+                preferredInterest,
             );
+
+            return await this.getCollabPostPreferredInterestById(id);
+        } catch (error) {
+            throw error;
         }
-
-        await this.collabPostPreferredInterestRepository.save(
-            preferredInterest,
-        );
-
-        return this.getCollabPostPreferredInterestById(id);
     }
 
     async deleteCollabPostPreferredInterest(id: string) {
-        await this.getCollabPostPreferredInterestById(id);
+        try {
+            await this.getCollabPostPreferredInterestById(id);
 
-        return this.collabPostPreferredInterestRepository.delete({
-            post_preferred_interest_id: id,
-        });
+            return await this.collabPostPreferredInterestRepository.delete({
+                post_preferred_interest_id: id,
+            });
+        } catch (error) {
+            throw error;
+        }
     }
 }
