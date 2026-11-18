@@ -20,6 +20,9 @@ import { InterestModule } from "./modules/interest/interest.module";
 import { UserProfileInterestModule } from "./modules/user_profile_interest/user_profile_interest.module";
 import { AuthModule } from "./modules/auth/auth.module";
 import { RolesGuard } from "./common/guard/roles.guard";
+import { UserProfileContactModule } from "./modules/user_profile_contact/user_profile_contact.module";
+import { CollabPostPreferredInterestModule } from "./modules/collab_post_preferred_interest/collab_post_preferred_interest.module";
+import { CollabPostRequiredSkillModule } from "./modules/collab_post_required_skill/collab_post_required_skill.module";
 
 @Module({
   imports: [
@@ -35,20 +38,23 @@ import { RolesGuard } from "./common/guard/roles.guard";
       isGlobal: true,
       load: [global_config],
     }),
-    UserModule, 
-    ComplaintReportModule,
-    UserProfileModule,
-    DepartmentModule,
-    CollabPostModule,
-    UserProfileSkillModule,
-    SkillModule,
-    CollabPostPreferredAcademicIdentityModule,
-    UserLinkedProfileModule,
-    CollabPostPreferredDepartmentModule,
-    CollabApplicationModule,
-    InterestModule,
-    UserProfileInterestModule,
     AuthModule,
+    CollabApplicationModule,
+    CollabPostModule,
+    CollabPostPreferredAcademicIdentityModule,
+    CollabPostPreferredDepartmentModule,
+    CollabPostPreferredInterestModule,
+    CollabPostRequiredSkillModule,
+    ComplaintReportModule,
+    DepartmentModule,
+    InterestModule,
+    SkillModule,
+    UserModule,
+    UserLinkedProfileModule,
+    UserProfileModule,
+    UserProfileContactModule,
+    UserProfileInterestModule,
+    UserProfileSkillModule,
   ],
   controllers: [AppController],
   providers: [AppService, RolesGuard],

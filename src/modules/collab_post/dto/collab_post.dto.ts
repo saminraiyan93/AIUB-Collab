@@ -1,15 +1,35 @@
-import {IsDateString,IsEnum,IsInt,IsNotEmpty,IsOptional,IsUUID,Min} from "class-validator";
+import {IsDateString,IsEnum,IsInt,IsNotEmpty,IsOptional,IsUUID,Min,registerDecorator, ValidationArguments, ValidationOptions} from "class-validator";
 import { CollabCategory } from "../../../common/enums/collab-category.enum";
 import { CollabType } from "../../../common/enums/collab-type.enum";
 import { LocationType } from "../../../common/enums/location-type.enum";
 import { PostStatus } from "../../../common/enums/post-status.enum";
+
+function IsFutureDate(validationOptions?: ValidationOptions) {
+    return (object: object, propertyName: string) => {
+        registerDecorator({
+            name: "isFutureDate",
+            target: object.constructor,
+            propertyName,
+            options: validationOptions,
+            validator: {
+                validate(value: unknown) {
+                    if (typeof value !== "string") return false;
+                    return new Date(value).getTime() > Date.now();
+                },
+                defaultMessage(args: ValidationArguments) {
+                    return `${args.property} must be in the future`;
+                },
+            },
+        });
+    };
+}
 
 export class CreateCollabPostDto {
     @IsNotEmpty()
     @IsUUID()
     user_profile_id!: string;
 
-    @IsNotEmpty()
+    @IsNotEmpty({message: "post_title is required"})
     post_title!: string;
 
     @IsOptional()
@@ -39,6 +59,7 @@ export class CreateCollabPostDto {
         {},
         { message: "application_deadline must be a valid date" },
     )
+    @IsFutureDate({ message: "application_deadline must be in the future" })
     application_deadline!: string;
 
     @IsNotEmpty({ message: "location_type is required" })
@@ -85,6 +106,7 @@ export class UpdateCollabPostDto {
         {},
         { message: "application_deadline must be a valid date" },
     )
+    @IsFutureDate({ message: "application_deadline must be in the future" })
     application_deadline?: string;
 
     @IsOptional()

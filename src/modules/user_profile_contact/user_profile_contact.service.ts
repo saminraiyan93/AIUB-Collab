@@ -1,14 +1,20 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException, ForbiddenException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { UserProfileContact } from "./entities/user_profile_contact.entity";
 import {CreateUserProfileContactDto,UpdateUserProfileContactDto} from "./dto/user_profile_contact.dto";
+import { AuthUser } from "@/common/interfaces/auth-user.interface";
+import { UserRole } from "@/common/enums/user-role.enum";
+import { UserProfile } from "../user_profile/entities/user_profile.entity";
+
 
 @Injectable()
 export class UserProfileContactService {
     constructor(
         @InjectRepository(UserProfileContact)
         private readonly userProfileContactRepository: Repository<UserProfileContact>,
+        @InjectRepository(UserProfile)
+        private readonly userProfileRepository: Repository<UserProfile>,
     ) {}
 
     async getUserProfileContacts() {
@@ -25,7 +31,6 @@ export class UserProfileContactService {
                 },
                 relations: ["user_profile"],
             });
-
         if (!userProfileContact) {
             throw new NotFoundException(
                 "User profile contact not found",
@@ -34,40 +39,53 @@ export class UserProfileContactService {
         return userProfileContact;
     }
 
-    async createUserProfileContact(dto: CreateUserProfileContactDto) {
-        const userProfileContact = this.userProfileContactRepository.create(dto);
-
-        const savedUserProfileContact = await this.userProfileContactRepository.save(userProfileContact);
-
+    async createUserProfileContact(dto: CreateUserProfileContactDto, user: AuthUser) {
+        const profile = await this.userProfileRepository.findOne({where: { user_profile_id: dto.user_profile_id },});
+        if (!profile) {
+            throw new NotFoundException("User profile not found");
+        }
+        if (profile.user_id !== user.id) {
+            throw new ForbiddenException("You can only create contacts for your own profile");
+        }
+        const contact = this.userProfileContactRepository.create(dto);
+        const savedContact = await this.userProfileContactRepository.save(contact);
         return {
             message: "User profile contact creation successful.",
-            data: savedUserProfileContact,
+            data: savedContact,
         };
     }
 
-    async updateUserProfileContact(id: string, dto: UpdateUserProfileContactDto) {
-        const userProfileContact = await this.getUserProfileContactById(id);
-        Object.assign(userProfileContact, dto);
-
-        const savedUserProfileContact = await this.userProfileContactRepository.save(userProfileContact);
-
+    async updateUserProfileContact(id: string, dto: UpdateUserProfileContactDto, user: AuthUser) {
+        const contact = await this.getUserProfileContactById(id);
+        await this.validateProfileOwnership(contact.user_profile_id,user);
+        Object.assign(contact, dto);
+        const savedContact = await this.userProfileContactRepository.save(contact);
         return {
             message: "User profile contact update successful.",
-            data: savedUserProfileContact,
+            data: savedContact,
         };
     }
 
-    async deleteUserProfileContact(id: string) {
-    await this.getUserProfileContactById(id);
+    async deleteUserProfileContact(id: string, user: AuthUser) {
+        const contact = await this.getUserProfileContactById(id);
 
-        const deleteResult =
-            await this.userProfileContactRepository.delete({
-                user_profile_contact_id: id,
-        });
-
+        if (!user.roles.includes(UserRole.ADMIN)) {
+            await this.validateProfileOwnership(contact.user_profile_id, user,);
+        }
+        const deleteResult = await this.userProfileContactRepository.delete({user_profile_contact_id: id,});
         return {
             message: "User profile contact deletion successful.",
             data: deleteResult,
         };
+    }
+
+    private async validateProfileOwnership(userProfileId: string, user: AuthUser) {
+        const profile = await this.userProfileRepository.findOne({where: { user_profile_id: userProfileId },});
+        if (!profile) {
+            throw new NotFoundException("User profile not found");
+        }
+        if (profile.user_id !== user.id) {
+            throw new ForbiddenException("You can only modify your own profile contacts");
+        }
     }
 }
